@@ -7,8 +7,7 @@ The Smart Agriculture System is a comprehensive project aimed at leveraging tech
 ### Features
 
 - **Mobile Application**: A Flutter app for farmers to monitor and manage their crops, soil, and weather conditions.
-- **Backend System**: A .NET Core API for handling data related to plants, soils, diseases, and weather forecasts.
-- **Data Analysis**: Integration with MongoDB for data storage and analysis.
+- **Backend System**: A .NET Core API for handling data related to plants, soils, diseases, and weather forecasts and store it in MongoDB for data storage
 
 ## Project Structure
 
@@ -27,7 +26,7 @@ The Smart Agriculture System is a comprehensive project aimed at leveraging tech
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/dev-mahmoudhamed/Smart_Agriculture_System
    ```
 2. Navigate to the `agriculture_app` folder and run:
    ```bash
@@ -39,10 +38,6 @@ The Smart Agriculture System is a comprehensive project aimed at leveraging tech
    dotnet restore
    dotnet run
    ```
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## License
 

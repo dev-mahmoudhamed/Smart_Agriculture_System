@@ -6,65 +6,65 @@ Thumbs.db
 *.log
 
 # Flutter
-**/build/
-**/.dart_tool/
-**/.flutter-plugins
-**/.flutter-plugins-dependencies
-**/.packages
-**/ios/Flutter/Flutter.framework
-**/ios/Flutter/Flutter.podspec
-**/ios/Flutter/engine
-**/ios/Flutter/flutter_export_environment.sh
-**/ios/Flutter/Generated.xcconfig
-**/ios/Flutter/ephemeral/
-**/ios/Flutter/App.framework
-**/ios/Flutter/Flutter.podspec
-**/ios/Flutter/Flutter.framework
-**/ios/Flutter/engine
-**/ios/Flutter/flutter_export_environment.sh
-**/ios/Flutter/Generated.xcconfig
-**/ios/Flutter/ephemeral/
-**/ios/Flutter/App.framework
+../**/build/
+../**/.dart_tool/
+../**/.flutter-plugins
+../**/.flutter-plugins-dependencies
+../**/.packages
+../**/ios/Flutter/Flutter.framework
+../**/ios/Flutter/Flutter.podspec
+../**/ios/Flutter/engine
+../**/ios/Flutter/flutter_export_environment.sh
+../**/ios/Flutter/Generated.xcconfig
+../**/ios/Flutter/ephemeral/
+../**/ios/Flutter/App.framework
+../**/ios/Flutter/Flutter.podspec
+../**/ios/Flutter/Flutter.framework
+../**/ios/Flutter/engine
+../**/ios/Flutter/flutter_export_environment.sh
+../**/ios/Flutter/Generated.xcconfig
+../**/ios/Flutter/ephemeral/
+../**/ios/Flutter/App.framework
 
 # Android
-**/android/.gradle/
-**/android/.idea/
-**/android/local.properties
-**/android/app/build/
-**/android/app/.cxx/
-**/android/app/.externalNativeBuild/
+../**/android/.gradle/
+../**/android/.idea/
+../**/android/local.properties
+../**/android/app/build/
+../**/android/app/.cxx/
+../**/android/app/.externalNativeBuild/
 
 # Windows
-**/windows/.vs/
-**/windows/CMakeFiles/
-**/windows/Debug/
-**/windows/Release/
-**/windows/x64/
-**/windows/x86/
+../**/windows/.vs/
+../**/windows/CMakeFiles/
+../**/windows/Debug/
+../**/windows/Release/
+../**/windows/x64/
+../**/windows/x86/
 
 # macOS
-**/macos/.DS_Store
-**/macos/DerivedData/
-**/macos/Flutter/ephemeral/
+../**/macos/.DS_Store
+../**/macos/DerivedData/
+../**/macos/Flutter/ephemeral/
 
 # Linux
-**/linux/build/
+../**/linux/build/
 
 # Web
-**/web/.dart_tool/
-**/web/build/
+../**/web/.dart_tool/
+../**/web/build/
 
 # .NET
-**/bin/
-**/obj/
+../**/bin/
+../**/obj/
 *.user
 *.suo
 *.userosscache
 *.sln.docstates
 
 # IDEs
-.idea/
-.vscode/
+../.idea/
+../.vscode/
 *.iml
 *.ipr
 *.iws
