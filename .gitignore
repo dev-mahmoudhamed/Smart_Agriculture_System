@@ -1,73 +1,71 @@
 # General
 .DS_Store
 Thumbs.db
-
-# Logs
 *.log
 
-# Flutter
-../**/build/
-../**/.dart_tool/
-../**/.flutter-plugins
-../**/.flutter-plugins-dependencies
-../**/.packages
-../**/ios/Flutter/Flutter.framework
-../**/ios/Flutter/Flutter.podspec
-../**/ios/Flutter/engine
-../**/ios/Flutter/flutter_export_environment.sh
-../**/ios/Flutter/Generated.xcconfig
-../**/ios/Flutter/ephemeral/
-../**/ios/Flutter/App.framework
-../**/ios/Flutter/Flutter.podspec
-../**/ios/Flutter/Flutter.framework
-../**/ios/Flutter/engine
-../**/ios/Flutter/flutter_export_environment.sh
-../**/ios/Flutter/Generated.xcconfig
-../**/ios/Flutter/ephemeral/
-../**/ios/Flutter/App.framework
+# Flutter specific
+agriculture_app/build/
+agriculture_app/.dart_tool/
+agriculture_app/.flutter-plugins
+agriculture_app/.flutter-plugins-dependencies
+agriculture_app/.packages
+agriculture_app/pubspec.lock
 
-# Android
-../**/android/.gradle/
-../**/android/.idea/
-../**/android/local.properties
-../**/android/app/build/
-../**/android/app/.cxx/
-../**/android/app/.externalNativeBuild/
+# Flutter - iOS specific
+agriculture_app/ios/Flutter/Flutter.framework/
+agriculture_app/ios/Flutter/Flutter.podspec
+agriculture_app/ios/Flutter/Generated.xcconfig
+agriculture_app/ios/Flutter/flutter_export_environment.sh
+agriculture_app/ios/Flutter/App.framework/
+agriculture_app/ios/Flutter/ephemeral/
 
-# Windows
-../**/windows/.vs/
-../**/windows/CMakeFiles/
-../**/windows/Debug/
-../**/windows/Release/
-../**/windows/x64/
-../**/windows/x86/
+# Flutter - Android specific
+agriculture_app/android/.gradle/
+agriculture_app/android/app/build/
+agriculture_app/android/.idea/
+agriculture_app/android/local.properties
+agriculture_app/android/app/.cxx/
+agriculture_app/android/app/.externalNativeBuild/
+agriculture_app/*.iml
+agriculture_app/android/*.iml
 
-# macOS
-../**/macos/.DS_Store
-../**/macos/DerivedData/
-../**/macos/Flutter/ephemeral/
+# Flutter - Windows specific
+agriculture_app/windows/out/
+agriculture_app/windows/.vs/
+agriculture_app/windows/Flutter/ephemeral/
 
-# Linux
-../**/linux/build/
+# Flutter - macOS specific
+agriculture_app/macos/Flutter/ephemeral/
+agriculture_app/macos/Flutter/GeneratedPluginRegistrant.*
+agriculture_app/macos/Pods/
 
-# Web
-../**/web/.dart_tool/
-../**/web/build/
+# Flutter - Linux specific
+agriculture_app/linux/flutter/ephemeral/
 
-# .NET
-../**/bin/
-../**/obj/
-*.user
+# .NET Core specific
+Smart_Agriculture_System/[Bb]in/
+Smart_Agriculture_System/[Oo]bj/
+Smart_Agriculture_System/*.user
+Smart_Agriculture_System/[Dd]ebug/
+Smart_Agriculture_System/[Rr]elease/
+
+# IDE - VS Code
+.vscode/
+*.code-workspace
+
+# IDE - Visual Studio
+.vs/
 *.suo
+*.user
 *.userosscache
 *.sln.docstates
 
-# IDEs
-../.idea/
-../.vscode/
+# IDE - JetBrains
+.idea/
 *.iml
 *.ipr
 *.iws
-*.sublime-workspace
-*.sublime-project
-*.code-workspace
+
+# Dependencies
+packages/
+node_modules/

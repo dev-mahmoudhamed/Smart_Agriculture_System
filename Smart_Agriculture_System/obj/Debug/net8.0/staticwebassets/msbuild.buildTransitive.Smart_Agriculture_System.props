@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\Smart_Agriculture_System.props" />
-</Project>
