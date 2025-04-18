@@ -40,8 +40,9 @@ if (app.Environment.IsDevelopment())
 app.UseCors(flutterAppOrigin);
 app.UseHangfireDashboard();
 
-RecurringJob.AddOrUpdate<ISencorDataJob>("ReadSencorDataJob",
-    processor => processor.ReadSencorDataAsync(), "*/2 * * * *");  // every 2 minutes
+BackgroundJob.Enqueue<ISencorDataJob>(processor => processor.ReadSencorDataAsync());
+RecurringJob.AddOrUpdate<ISencorDataJob>("ReadSencorDataJob", processor => processor.ReadSencorDataAsync(), "0 */3 * * *");  // every 2 minutes
+
 //app.UseHttpsRedirection();
 
 app.UseAuthorization();
