@@ -17,13 +17,14 @@ namespace Smart_Agriculture_System.Data
         public IMongoCollection<Soil> Soils => Database.GetCollection<Soil>("soils");
         public IMongoCollection<Plant> Plants => Database.GetCollection<Plant>("plants");
         public IMongoCollection<Disease> Diseases => Database.GetCollection<Disease>("diseases");
+        public IMongoCollection<Reading> Readings => Database.GetCollection<Reading>("Readings");
     }
 
     public class MongoDBSettings
     {
-        public string ConnectionString { get; set; } = null!;
-        public string DatabaseName { get; set; } = null!;
-        //public string CollectionName { get; set; } = null!;
+        public string ConnectionString { get; set; } = string.Empty;
+        public string DatabaseName { get; set; } = string.Empty;
+        public string CollectionName { get; set; } = string.Empty;
 
     }
 }

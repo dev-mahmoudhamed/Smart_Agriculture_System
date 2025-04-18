@@ -15,10 +15,14 @@ namespace Smart_Agriculture_System.Data
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            // تأكد من اتصال MongoDB
             await _context.Database.RunCommandAsync((Command<MongoDB.Bson.BsonDocument>)"{ping:1}");
+            await SeedReadings();
+        }
 
-            // تهيئة بيانات التربة إذا كانت المجموعة فارغة
+        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+
+        private async Task SeedSoil()
+        {
             if (await _context.Soils.CountDocumentsAsync(_ => true) == 0)
             {
                 var soils = new List<Soil>
@@ -28,27 +32,32 @@ namespace Smart_Agriculture_System.Data
             };
                 await _context.Soils.InsertManyAsync(soils);
             }
+        }
 
-            // تهيئة الأمراض إذا كانت المجموعة فارغة
+        private async Task SeedDiseases()
+        {
             if (await _context.Diseases.CountDocumentsAsync(_ => true) == 0)
             {
                 var diseases = new List<Disease>
             {
                 new Disease {
                     Name = "Leaf Spot",
-                    Symptoms = "Brown spots on leaves",
+                    Symptoms = new List<string> { "Brown spots on leaves", "Yellowing of leaves" },
                     Treatment = "Apply fungicide"
                 },
                 new Disease {
                     Name = "Powdery Mildew",
-                    Symptoms = "White powder on leaves",
+                    Symptoms = new List<string> { "White powder on leaves", "Stunted growth" },
                     Treatment = "Use neem oil"
                 }
             };
                 await _context.Diseases.InsertManyAsync(diseases);
             }
+        }
 
-            // تهيئة النباتات مع ربطها بالأمراض
+        private async Task SeedPlants()
+        {
+
             if (await _context.Plants.CountDocumentsAsync(_ => true) == 0)
             {
                 var diseases = await _context.Diseases.Find(_ => true).ToListAsync();
@@ -70,6 +79,27 @@ namespace Smart_Agriculture_System.Data
             }
         }
 
-        public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+        private async Task SeedReadings()
+        {
+            if (await _context.Readings.CountDocumentsAsync(_ => true) == 0)
+            {
+                var readings = new List<Reading>
+            {
+                new Reading {
+                    Temperature = 25.5,
+                    Humidity = 60,
+                    Time = DateTime.Now.ToLocalTime().ToString("d/M/yyyy h:mm:ss tt"),
+                    ImageAsBase64 = "test"
+                },
+                new Reading {
+                    Temperature = 22.0,
+                    Humidity = 55,
+                    Time = DateTime.Now.ToLocalTime().ToString("d/M/yyyy h:mm:ss tt"),
+                    ImageAsBase64 = "test"
+                }
+            };
+                await _context.Readings.InsertManyAsync(readings);
+            }
+        }
     }
 }

@@ -29,7 +29,7 @@ namespace Smart_Agriculture_System.Models
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string Name { get; set; }
-        public string Symptoms { get; set; }
+        public List<string> Symptoms { get; set; } = new List<string>();
         public string Treatment { get; set; }
     }
 }

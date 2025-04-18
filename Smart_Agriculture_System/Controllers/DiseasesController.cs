@@ -5,8 +5,8 @@ using Smart_Agriculture_System.Models;
 
 namespace Smart_Agriculture_System.Controllers
 {
-    [ApiController]
-    [Route("api/diseases")]
+    //[ApiController]
+    //[Route("api/diseases")]
     public class DiseasesController : ControllerBase
     {
         private readonly MongoDBContext _context;

@@ -5,8 +5,8 @@ using Smart_Agriculture_System.Models;
 
 namespace Smart_Agriculture_System.Controllers
 {
-    [ApiController]
-    [Route("api/soils")]
+    //[ApiController]
+    //[Route("api/soils")]
     public class SoilsController : ControllerBase
     {
         private readonly MongoDBContext _context;

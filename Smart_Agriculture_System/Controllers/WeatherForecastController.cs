@@ -5,8 +5,8 @@ using System.Text.Json;
 namespace Smart_Agriculture_System.Controllers
 {
 
-    [ApiController]
-    [Route("[controller]")]
+    //[ApiController]
+    //[Route("api/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory;
