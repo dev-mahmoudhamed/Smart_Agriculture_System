@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHttpClient();
 builder.Services.AddHangfire(config => config.UseMemoryStorage());
 builder.Services.AddHangfireServer();
-builder.Services.AddTransient<ISencorDataJob, SencorDataJob>();
+builder.Services.AddTransient<ISensorDataJob, SensorDataJob>();
 
 var flutterAppOrigin = "_myFlutterApp";
 builder.Services.AddCors(options =>
@@ -40,8 +40,11 @@ if (app.Environment.IsDevelopment())
 app.UseCors(flutterAppOrigin);
 app.UseHangfireDashboard();
 
-BackgroundJob.Enqueue<ISencorDataJob>(processor => processor.ReadSencorDataAsync());
-RecurringJob.AddOrUpdate<ISencorDataJob>("ReadSencorDataJob", processor => processor.ReadSencorDataAsync(), "0 */3 * * *");  // every 2 minutes
+BackgroundJob.Enqueue<ISensorDataJob>(processor => processor.LoadSensorDataAsync());
+BackgroundJob.Enqueue<ISensorDataJob>(processor => processor.LoadImageDataAsync());
+
+RecurringJob.AddOrUpdate<ISensorDataJob>("ReadSencorDataJob", processor => processor.LoadSensorDataAsync(), "0 */2 * * *");  // every 2 hours
+RecurringJob.AddOrUpdate<ISensorDataJob>("ReadSencorDataJob", processor => processor.LoadImageDataAsync(), "0 */2 * * *");  // every 2 hours
 
 //app.UseHttpsRedirection();
 

@@ -17,16 +17,20 @@ namespace Smart_Agriculture_System.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Reading>>> GetAllReadings()
+        public async Task<ActionResult<SensorReading>> GetAllSensorDataAsync()
         {
-            var readings = await _context.Readings.Find(_ => true).ToListAsync();
+            var readings = await _context.SensorReadings
+                .Find(_ => true)
+                .SortByDescending(r => r.Time)
+                .FirstOrDefaultAsync();
+
             return Ok(readings);
         }
 
-        private async Task<ActionResult<Reading>> CreateReading(Reading reading)
+        private async Task<ActionResult<SensorReading>> CreateReading(SensorReading reading)
         {
-            await _context.Readings.InsertOneAsync(reading);
-            return CreatedAtAction(nameof(GetAllReadings), reading);
+            await _context.SensorReadings.InsertOneAsync(reading);
+            return CreatedAtAction(nameof(GetAllSensorDataAsync), reading);
         }
     }
 }

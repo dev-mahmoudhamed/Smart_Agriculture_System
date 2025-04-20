@@ -81,24 +81,22 @@ namespace Smart_Agriculture_System.Data
 
         private async Task SeedReadings()
         {
-            if (await _context.Readings.CountDocumentsAsync(_ => true) == 0)
+            if (await _context.SensorReadings.CountDocumentsAsync(_ => true) == 0)
             {
-                var readings = new List<Reading>
+                var readings = new List<SensorReading>
             {
-                new Reading {
+                new SensorReading {
                     Temperature = 25.5,
                     Humidity = 60,
-                    Time = DateTime.Now.ToLocalTime().ToString("d/M/yyyy h:mm:ss tt"),
-                    ImageAsBase64 = "test"
+                    Time = DateTime.Now.ToLocalTime()
                 },
-                new Reading {
+                new SensorReading {
                     Temperature = 22.0,
                     Humidity = 55,
-                    Time = DateTime.Now.ToLocalTime().ToString("d/M/yyyy h:mm:ss tt"),
-                    ImageAsBase64 = "test"
+                    Time = DateTime.Now.ToLocalTime()
                 }
             };
-                await _context.Readings.InsertManyAsync(readings);
+                await _context.SensorReadings.InsertManyAsync(readings);
             }
         }
     }
