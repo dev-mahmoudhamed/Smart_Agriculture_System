@@ -22,4 +22,5 @@ namespace Smart_Agriculture_System.Models
         public string ImageAsBase64 { get; set; } = string.Empty;
         public DateTime Time { get; set; }
     }
+
 }

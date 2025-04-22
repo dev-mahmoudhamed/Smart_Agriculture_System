@@ -43,8 +43,8 @@ app.UseHangfireDashboard();
 BackgroundJob.Enqueue<ISensorDataJob>(processor => processor.LoadSensorDataAsync());
 BackgroundJob.Enqueue<ISensorDataJob>(processor => processor.LoadImageDataAsync());
 
-RecurringJob.AddOrUpdate<ISensorDataJob>("ReadSencorDataJob", processor => processor.LoadSensorDataAsync(), "0 */2 * * *");  // every 2 hours
-RecurringJob.AddOrUpdate<ISensorDataJob>("ReadSencorDataJob", processor => processor.LoadImageDataAsync(), "0 */2 * * *");  // every 2 hours
+RecurringJob.AddOrUpdate<ISensorDataJob>("ReadSencorDataJob", processor => processor.LoadSensorDataAsync(), "0 */1 * * *");  // every 2 hours
+RecurringJob.AddOrUpdate<ISensorDataJob>("ReadSencorDataJob", processor => processor.LoadImageDataAsync(), "0 */1 * * *");  // every 2 hours
 
 //app.UseHttpsRedirection();
 

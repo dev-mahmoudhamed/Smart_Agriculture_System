@@ -27,10 +27,9 @@ namespace Smart_Agriculture_System.Controllers
             return Ok(readings);
         }
 
-        private async Task<ActionResult<SensorReading>> CreateReading(SensorReading reading)
+        public async Task<ActionResult<PredictResult>> Predict(PredictInput input)
         {
-            await _context.SensorReadings.InsertOneAsync(reading);
-            return CreatedAtAction(nameof(GetAllSensorDataAsync), reading);
+            throw new NotImplementedException("Prediction logic is not implemented yet.");
         }
     }
 }
