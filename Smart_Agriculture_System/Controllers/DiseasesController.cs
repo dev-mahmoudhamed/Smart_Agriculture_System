@@ -17,21 +17,21 @@ namespace Smart_Agriculture_System.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Disease>>> GetAllDiseases()
+        private async Task<ActionResult<IEnumerable<Disease>>> GetAllDiseases()
         {
             var diseases = await _context.Diseases.Find(_ => true).ToListAsync();
             return Ok(diseases);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Disease>> CreateDisease(Disease disease)
+        private async Task<ActionResult<Disease>> CreateDisease(Disease disease)
         {
             await _context.Diseases.InsertOneAsync(disease);
             return CreatedAtAction(nameof(GetAllDiseases), disease);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Disease>> GetDisease(string id)
+        private async Task<ActionResult<Disease>> GetDisease(string id)
         {
             var disease = await _context.Diseases.Find(x => x.Id == id).FirstOrDefaultAsync();
             return disease;
