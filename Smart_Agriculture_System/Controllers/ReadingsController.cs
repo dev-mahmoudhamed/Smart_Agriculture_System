@@ -58,10 +58,13 @@ namespace Smart_Agriculture_System.Controllers
         }
 
         [HttpGet("getAdvice")]
-        public async Task<string> GetAdvice()
+        public async Task<FlutterResponceObject> GetAdvice()
         {
             var response = await _geminiServices.GetAdvice();
-            return response;
+            return new FlutterResponceObject
+            {
+                Result = response,
+            };
         }
 
         [HttpPost("detectDiseases")]
