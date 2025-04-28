@@ -30,7 +30,7 @@ namespace Smart_Agriculture_System.Controllers
         }
 
         [HttpPost("predict")]
-        public async Task<string> Predict()
+        public async Task<FlutterResponceObject> Predict()
         {
             var data = await _sensorDataServices.GetAllSensorDataAsync();
             var input = new PredictInput
@@ -41,13 +41,19 @@ namespace Smart_Agriculture_System.Controllers
             try
             {
                 var predictionResult = await ProcessPredictionFromPython(input);
-                return predictionResult;
+                return new FlutterResponceObject
+                {
+                    Result = predictionResult,
+                };
             }
             catch (Exception)
             {
                 var geminiPredictionString = (await _geminiServices.Predict(input)).ToString();
                 var result = string.Concat($"Based on the current temperature :{input.Temperature} and humidity: {input.Humidity}, ", geminiPredictionString);
-                return result;
+                return new FlutterResponceObject
+                {
+                    Result = result,
+                };
             }
         }
 
