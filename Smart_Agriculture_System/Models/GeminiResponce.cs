@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Smart_Agriculture_System.Models
 {
@@ -77,14 +78,13 @@ namespace Smart_Agriculture_System.Models
         public string Description { get; set; }
 
         [JsonPropertyName("confidence")]
-        public string Confidence { get; set; } // Kept as string because it includes the '%' sign
+        public string Confidence { get; set; }
 
         [JsonPropertyName("rationale")]
         public string Rationale { get; set; }
-
-
+        public override string ToString()
+        {
+            return $"the most suitable plant for cultivation is: {RecommendedCrop ?? "Unknown Crop"}.";
+        }
     }
-
-
-
 }
