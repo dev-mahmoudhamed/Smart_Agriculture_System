@@ -8,16 +8,18 @@ namespace Smart_Agriculture_System.BackgroundServices
     {
         private readonly string _dataPath;
         private readonly MongoDBContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public SensorDataJob(IConfiguration configuration, MongoDBContext context)
+        public SensorDataJob(IConfiguration configuration, MongoDBContext context, IWebHostEnvironment environment)
         {
             _dataPath = configuration["Data:DataPath"]!;
             _context = context;
+            _environment = environment;
         }
 
         public async Task LoadSensorDataAsync()
         {
-            string jsonPath = Path.Combine(_dataPath, "data.json");
+            var jsonPath = Path.Combine(_environment.WebRootPath, "Data", "data.json");
             try
             {
                 if (!File.Exists(jsonPath))
@@ -41,7 +43,7 @@ namespace Smart_Agriculture_System.BackgroundServices
 
         public async Task LoadImageDataAsync()
         {
-            string imgPath = Path.Combine(_dataPath, "image.jpg");
+            var imgPath = Path.Combine(_environment.WebRootPath, "Data", "image.jpg");
             try
             {
                 if (!File.Exists(imgPath))
