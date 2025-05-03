@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Options;
-using Smart_Agriculture_System.Models;
+﻿using Smart_Agriculture_System.Models;
 using System.Text;
 using System.Text.Json;
 

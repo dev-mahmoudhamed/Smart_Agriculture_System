@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Smart_Agriculture_System.Models;
 using Smart_Agriculture_System.Services;
-using System.Buffers.Text;
 using System.Diagnostics;
-using System.Text;
 
 namespace Smart_Agriculture_System.Controllers
 {
