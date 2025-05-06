@@ -82,6 +82,8 @@ The JSON object should follow this exact format:
             var processedResponse = BeautifyAdvice(response);
             return processedResponse;
         }
+        
+        
         private async Task<object> AnalyzeImage(ImageRequest request)
         {
             if (request.ImageFile == null || request.ImageFile.Length == 0)

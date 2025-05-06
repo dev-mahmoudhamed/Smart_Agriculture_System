@@ -74,8 +74,8 @@ namespace Smart_Agriculture_System.Controllers
                 await img.CopyToAsync(stream);
             }
 
-            await ProcessImg(tempPath);
-            return null;
+            var result = await ProcessImg(tempPath);
+            return result;
         }
 
 

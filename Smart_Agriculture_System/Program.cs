@@ -48,7 +48,6 @@ BackgroundJob.Enqueue<ISensorDataJob>(processor => processor.LoadImageDataAsync(
 RecurringJob.AddOrUpdate<ISensorDataJob>("ReadSencorDataJob", processor => processor.LoadSensorDataAsync(), "0 */1 * * *");  // every 1 hour
 RecurringJob.AddOrUpdate<ISensorDataJob>("ReadSencorDataJob", processor => processor.LoadImageDataAsync(), "0 */1 * * *");  // every 1 hour
 
-//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
