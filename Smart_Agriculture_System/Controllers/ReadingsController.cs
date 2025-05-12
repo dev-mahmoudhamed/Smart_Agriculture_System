@@ -66,7 +66,7 @@ namespace Smart_Agriculture_System.Controllers
         }
 
         [HttpPost("detectDiseases")]
-        public async Task<object> DetectDiseases(IFormFile img)
+        public async Task<string> DetectDiseases(IFormFile img)
         {
             string tempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + Path.GetExtension(img.FileName));
             using (var stream = new FileStream(tempPath, FileMode.Create))
@@ -74,8 +74,22 @@ namespace Smart_Agriculture_System.Controllers
                 await img.CopyToAsync(stream);
             }
 
-            var result = await ProcessImg(tempPath);
-            return result;
+            try
+            {
+                string result = await ProcessImg(tempPath);
+                return result;
+            }
+            catch (Exception)
+            {
+                //var geminiPredictionString = (await _geminiServices.Predict(input)).ToString();
+                //var result = string.Concat($"Based on the current temperature :{input.Temperature} and humidity: {input.Humidity}, ", geminiPredictionString);
+                //return new FlutterResponceObject
+                //{
+                //    Result = result,
+                //};
+                return "";
+            }
+
         }
 
 
