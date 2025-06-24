@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Smart_Agriculture_System.Models;
 using Smart_Agriculture_System.Services;
+using System;
 using System.Diagnostics;
+using System.Text.Json;
 
 namespace Smart_Agriculture_System.Controllers
 {
@@ -28,7 +30,7 @@ namespace Smart_Agriculture_System.Controllers
         }
 
         [HttpPost("predict")]
-        public async Task<FlutterResponceObject> Predict()
+        public async Task<List<PlantInfo>> Predict()
         {
             var data = await _sensorDataServices.GetAllSensorDataAsync();
             var input = new PredictInput
@@ -36,25 +38,11 @@ namespace Smart_Agriculture_System.Controllers
                 Temperature = data.Temperature,
                 Humidity = data.Humidity
             };
-            try
-            {
-                var predictionResult = await ProcessPredictionFromPython(input);
-                return new FlutterResponceObject
-                {
-                    Result = predictionResult,
-                };
-            }
-            catch (Exception)
-            {
-                var geminiPredictionString = (await _geminiServices.Predict(input)).ToString();
-                var result = string.Concat($"Based on the current temperature :{input.Temperature} and humidity: {input.Humidity}, ", geminiPredictionString);
-                return new FlutterResponceObject
-                {
-                    Result = result,
-                };
-            }
+            var predictionResult = await PredictFromApi(input);
+            return predictionResult;
         }
 
+     
         [HttpGet("getAdvice")]
         public async Task<FlutterResponceObject> GetAdvice()
         {
@@ -65,6 +53,7 @@ namespace Smart_Agriculture_System.Controllers
             };
         }
 
+     
         [HttpPost("detectDiseases")]
         public async Task<string> DetectDiseases(IFormFile img)
         {
@@ -73,52 +62,31 @@ namespace Smart_Agriculture_System.Controllers
             {
                 await img.CopyToAsync(stream);
             }
-
-            try
-            {
-                string result = await ProcessImg(tempPath);
-                return result;
-            }
-            catch (Exception)
-            {
-                //var geminiPredictionString = (await _geminiServices.Predict(input)).ToString();
-                //var result = string.Concat($"Based on the current temperature :{input.Temperature} and humidity: {input.Humidity}, ", geminiPredictionString);
-                //return new FlutterResponceObject
-                //{
-                //    Result = result,
-                //};
-                return "";
-            }
-
+            string result = await ProcessImg(tempPath);
+            return result;
         }
 
 
-        private async Task<string> ProcessPredictionFromPython(PredictInput input)
+        private async Task<List<PlantInfo>> PredictFromApi(PredictInput input)
         {
-            string data = $"{input.Temperature},{input.Humidity}";
-            var psi = new ProcessStartInfo
+            string url = $"https://web-production-856c2.up.railway.app/predict_plant?Temperature={input.Temperature}&Humidity={input.Humidity}";
+            using (HttpClient client = new HttpClient())
             {
-                FileName = "python",  // or full path to python.exe
-                Arguments = $"\"D:\\Faculty\\Grad_Project\\predict_plant.py\" \"{data}\"",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
+                try
+                {
+                    var response = await client.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+                    var json = await response.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    return JsonSerializer.Deserialize<List<PlantInfo>>(json, options);
 
-            using var process = Process.Start(psi);
-            if (process == null)
-                throw new InvalidOperationException("Failed to start Python process.");
-
-            var stdOut = process.StandardOutput.ReadToEndAsync();
-            var stdErr = process.StandardError.ReadToEndAsync();
-            await Task.WhenAll(stdOut, stdErr).ConfigureAwait(false);
-            process.WaitForExit();
-
-            if (!string.IsNullOrWhiteSpace(stdErr.Result))
-                throw new Exception($"Python error: {stdErr.Result}");
-
-            return stdOut.Result.Trim();
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine($"Request error: {e.Message}");
+                    throw;
+                }
+            }
         }
         private async Task<string> ProcessImg(string tempPath)
         {
