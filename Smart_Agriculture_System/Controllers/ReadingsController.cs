@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Smart_Agriculture_System.Models;
 using Smart_Agriculture_System.Services;
-using System;
 using System.Diagnostics;
 using System.Text.Json;
+using System.Net.Http.Headers;
 
 namespace Smart_Agriculture_System.Controllers
 {
@@ -42,7 +42,6 @@ namespace Smart_Agriculture_System.Controllers
             return predictionResult;
         }
 
-     
         [HttpGet("getAdvice")]
         public async Task<FlutterResponceObject> GetAdvice()
         {
@@ -53,16 +52,15 @@ namespace Smart_Agriculture_System.Controllers
             };
         }
 
-     
-        [HttpPost("detectDiseases")]
-        public async Task<string> DetectDiseases(IFormFile img)
+        [HttpPost("detect")]
+        public async Task<HealthPredictionResponse> DetectDiseases(IFormFile img)
         {
             string tempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + Path.GetExtension(img.FileName));
             using (var stream = new FileStream(tempPath, FileMode.Create))
             {
                 await img.CopyToAsync(stream);
             }
-            string result = await ProcessImg(tempPath);
+            var result = await ProcessImg(tempPath);
             return result;
         }
 
@@ -88,66 +86,25 @@ namespace Smart_Agriculture_System.Controllers
                 }
             }
         }
-        private async Task<string> ProcessImg(string tempPath)
+        private async Task<HealthPredictionResponse> ProcessImg(string imagePath)
         {
-            string output = "";
-            var psi = new ProcessStartInfo
-            {
-                FileName = "python", // or full path to python.exe
-                Arguments = $"\"D:\\Faculty\\Grad_Project\\capture_photo.py\" \"{tempPath}\"",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
+            var url = "https://web-production-5ff01.up.railway.app/predict_health";
 
-            using (var process = Process.Start(psi))
-            {
-                output = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-            }
-            return output;
+            using var httpClient = new HttpClient();
+
+            byte[] imageData = await System.IO.File.ReadAllBytesAsync(imagePath);
+
+            using var content = new ByteArrayContent(imageData);
+            content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+
+            var response = await httpClient.PostAsync(url, content);
+            response.EnsureSuccessStatusCode();
+
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            var result = JsonSerializer.Deserialize<HealthPredictionResponse>(responseContent, options);
+
+            return result;
         }
-        private async Task<byte[]> ConvertToByteArrayAsync(IFormFile formFile)
-        {
-            var xxx = GetAdvice();
-            if (formFile == null || formFile.Length == 0)
-                return null;
-
-            using (var memoryStream = new MemoryStream())
-            {
-                await formFile.CopyToAsync(memoryStream);
-                return memoryStream.ToArray();
-            }
-        }
-        // Capture Photo from camera sensor << It can be deleted >>
-        [HttpGet("getSensorImage")]
-        private IActionResult GetSensorImageAsync()
-        {
-            var psi = new ProcessStartInfo
-            {
-                FileName = "python",
-                Arguments = "D:\\Faculty\\Grad_Project\\capture_photo.py",
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            };
-
-            using (var process = Process.Start(psi))
-            {
-                string output = process.StandardOutput.ReadToEnd();
-                process.WaitForExit();
-
-                if (!output.Contains("OK"))
-                    return StatusCode(500, "Failed to capture photo");
-            }
-
-            var imagePath = "D:\\Faculty\\Grad_Project\\latest.jpg";
-            if (!System.IO.File.Exists(imagePath))
-                return StatusCode(500, "Image file not found");
-
-            var imageBytes = System.IO.File.ReadAllBytes(imagePath);
-            return File(imageBytes, "image/jpeg");
-        }
-
     }
 }

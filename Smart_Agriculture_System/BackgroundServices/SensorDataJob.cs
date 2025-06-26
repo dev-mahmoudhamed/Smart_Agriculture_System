@@ -80,8 +80,7 @@ namespace Smart_Agriculture_System.BackgroundServices
             try
             {
                 var httpClient = _httpClientFactory.CreateClient();
-                var apiUrl = @$"https://api.open-meteo.com/v1/forecast?latitude={longitude}&longitude={longitude}&current=temperature_2m,relative_humidity_2m&timezone=Africa%2FCairo&forecast_days=1";
-
+                var apiUrl = @$"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,relative_humidity_2m&timezone=Africa%2FCairo&forecast_days=1";
                 var response = await httpClient.GetAsync(apiUrl);
                 response.EnsureSuccessStatusCode();
 
