@@ -30,7 +30,7 @@ namespace Smart_Agriculture_System.Controllers
         }
 
         [HttpPost("predict")]
-        public async Task<List<PlantInfo>> Predict()
+        public async Task<PlantInfo> Predict()
         {
             var data = await _sensorDataServices.GetAllSensorDataAsync();
             var input = new PredictInput
@@ -39,7 +39,7 @@ namespace Smart_Agriculture_System.Controllers
                 Humidity = data.Humidity
             };
             var predictionResult = await PredictFromApi(input);
-            return predictionResult;
+            return predictionResult.First();
         }
 
         [HttpGet("getAdvice")]
@@ -53,15 +53,28 @@ namespace Smart_Agriculture_System.Controllers
         }
 
         [HttpPost("detect")]
-        public async Task<HealthPredictionResponse> DetectDiseases(IFormFile img)
+        public async Task<string> DetectDiseases(IFormFile img)
         {
             string tempPath = Path.Combine(Path.GetTempPath(), Guid.NewGuid() + Path.GetExtension(img.FileName));
             using (var stream = new FileStream(tempPath, FileMode.Create))
             {
                 await img.CopyToAsync(stream);
             }
-            var result = await ProcessImg(tempPath);
-            return result;
+            var apiResult = await ProcessImg(tempPath);
+
+
+            var formattedClass = apiResult.Class.Replace("___", " - ").Replace("_", " ");
+
+            // Convert confidence to percentage with 1 decimal
+            var confidencePercent = (apiResult.Confidence * 100).ToString("F1") + "%";
+
+            // Build result string
+            string resultMessage =  $@"Detected Disease: {formattedClass} Confidence: {confidencePercent} 
+Treatment Recommendation: {apiResult.Treatment}";
+
+            Console.WriteLine(resultMessage);
+        
+            return resultMessage;
         }
 
 
