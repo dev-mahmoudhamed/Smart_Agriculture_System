@@ -26,8 +26,8 @@ namespace Smart_Agriculture_System.BackgroundServices
 
         public async Task LoadSensorDataAsync()
         {
-            var weatherData = await GetCurrentWeather();
-            await WriteSensorDataToFileAsync(weatherData.Temperature2M, weatherData.RelativeHumidity2M);
+            var weatherData = await GetEnvironmentWeather();
+            await WriteSensorDataToFileAsync(double.Parse(weatherData.Temperature), double.Parse(weatherData.Humidity));
             var jsonPath = Path.Combine(_environment.WebRootPath, "Data", "data.json");
             try
             {
@@ -123,5 +123,19 @@ namespace Smart_Agriculture_System.BackgroundServices
             }
         }
 
+        private async Task<EnvironmentWeather> GetEnvironmentWeather()
+        {
+            var httpClient = _httpClientFactory.CreateClient();
+            var apiUrl = "https://web-production-856c2.up.railway.app/get_last_environment";
+            var response = await httpClient.GetAsync(apiUrl);
+            response.EnsureSuccessStatusCode();
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var weatherData = JsonSerializer.Deserialize<EnvironmentWeather>(jsonString, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                
+            });
+            return weatherData;
+        }
     }
 }
