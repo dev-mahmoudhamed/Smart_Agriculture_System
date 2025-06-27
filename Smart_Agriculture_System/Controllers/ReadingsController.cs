@@ -30,7 +30,7 @@ namespace Smart_Agriculture_System.Controllers
         }
 
         [HttpGet("predict")]
-        public async Task<FlutterResponceObject> Predict()
+        public async Task<PlantInfo> Predict()
         {
             var data = await _sensorDataServices.GetAllSensorDataAsync();
             var input = new PredictInput
@@ -39,10 +39,7 @@ namespace Smart_Agriculture_System.Controllers
                 Humidity = data.Humidity
             };
             var predictionResult = await PredictFromApi(input);
-            return new FlutterResponceObject
-            {
-                Result = Summarize(predictionResult.First())
-            };
+            return predictionResult[0];
         }
 
         [HttpGet("getAdvice")]
