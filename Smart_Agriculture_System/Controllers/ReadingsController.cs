@@ -29,8 +29,8 @@ namespace Smart_Agriculture_System.Controllers
             return readings;
         }
 
-        [HttpPost("predict")]
-        public async Task<PlantInfo> Predict()
+        [HttpGet("predict")]
+        public async Task<FlutterResponceObject> Predict()
         {
             var data = await _sensorDataServices.GetAllSensorDataAsync();
             var input = new PredictInput
@@ -39,7 +39,10 @@ namespace Smart_Agriculture_System.Controllers
                 Humidity = data.Humidity
             };
             var predictionResult = await PredictFromApi(input);
-            return predictionResult.First();
+            return new FlutterResponceObject
+            {
+                Result = Summarize(predictionResult.First())
+            };
         }
 
         [HttpGet("getAdvice")]
@@ -100,7 +103,6 @@ Treatment Recommendation: {apiResult.Treatment}";
                 }
                 catch (HttpRequestException e)
                 {
-                    Console.WriteLine($"Request error: {e.Message}");
                     throw;
                 }
             }
@@ -124,6 +126,14 @@ Treatment Recommendation: {apiResult.Treatment}";
             var result = JsonSerializer.Deserialize<HealthPredictionResponse>(responseContent, options);
 
             return result;
+        }
+
+        private string Summarize(PlantInfo input)
+        {
+            return $"🌱 Plant Name: {input.Plant_name}\n" +
+           $"🪴 Planting Method: {input.Planting_method}\n" +
+           $"🌡️ Details: {input.Details}\n" +
+           $"🖼️ Image: {input.Image_path}";
         }
     }
 }
