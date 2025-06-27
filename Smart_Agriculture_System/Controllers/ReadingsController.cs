@@ -131,9 +131,9 @@ Treatment Recommendation: {apiResult.Treatment}";
         private string Summarize(PlantInfo input)
         {
             return $"🌱 Plant Name: {input.Plant_name}\n" +
-           $"🪴 Planting Method: {input.Planting_method}\n" +
-           $"🌡️ Details: {input.Details}\n" +
-           $"🖼️ Image: {input.Image_path}";
+           $"Planting Method: {input.Planting_method}\n" +
+           $"Details: {input.Details}\n" +
+           $"Image: {input.Image_path}";
         }
     }
 }
